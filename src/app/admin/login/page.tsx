@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabase";
-
 export default function AdminLogin() {
   const router = useRouter();
   const [email, setEmail] = useState("");
