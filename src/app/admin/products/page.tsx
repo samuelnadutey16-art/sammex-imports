@@ -225,9 +225,13 @@ const productData = {
         <label>Stock Quantity</label>
         <input type="number" min="0" value={stock} onChange={e => setStock(e.target.value)} style={styles.input} />
 
-        <label>Product Image URL</label>
-        <input type="url" value={imageUrl} onChange={e => setImageUrl(e.target.value)} placeholder="Paste image link here" style={styles.input} />
-
+        <label>Choose Product Picture</label>
+<input
+  type="file"
+  accept="image/jpeg,image/png,image/webp"
+  onChange={e => setImageFile(e.target.files?.[0] || null)}
+  style={styles.input}
+/>
         {error && <p style={styles.error}>{error}</p>}
 
         <button disabled={saving} type="submit" style={styles.saveButton}>
