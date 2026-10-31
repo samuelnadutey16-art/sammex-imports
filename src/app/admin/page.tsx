@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabase";
-
 export default function AdminDashboard() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
