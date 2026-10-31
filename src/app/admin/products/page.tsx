@@ -106,17 +106,42 @@ export default function ProductsPage() {
     setSaving(true);
     setError("");
 
-    const productData = {
-      name,
-      description,
-      price: Number(price),
-      currency: "GHS",
-      category_id: categoryId || null,
-      product_type: productType,
-      stock_quantity: Number(stock),
-      image_url: imageUrl || null,
-    };
+    let uploadedImageUrl = imageUrl || null;
 
+if (imageFile) {
+  const fileName = `${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9.-]/g, "-")}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("product-images")
+    .upload(fileName, imageFile, {
+      cacheControl: "3600",
+      upsert: false,
+      contentType: imageFile.type,
+    });
+
+  if (uploadError) {
+    setError(uploadError.message);
+    setSaving(false);
+    return;
+  }
+
+  const { data: publicUrlData } = supabase.storage
+    .from("product-images")
+    .getPublicUrl(fileName);
+
+  uploadedImageUrl = publicUrlData.publicUrl;
+}
+
+const productData = {
+  name,
+  description,
+  price: Number(price),
+  currency: "GHS",
+  category_id: categoryId || null,
+  product_type: productType,
+  stock_quantity: Number(stock),
+  image_url: uploadedImageUrl,
+};
     const result = editingId
       ? await supabase.from("products").update(productData).eq("id", editingId)
       : await supabase.from("products").insert(productData);
