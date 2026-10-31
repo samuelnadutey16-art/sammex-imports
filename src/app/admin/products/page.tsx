@@ -40,6 +40,7 @@ export default function ProductsPage() {
   const [productType, setProductType] = useState("ready_stock");
   const [stock, setStock] = useState("0");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState("");
   useEffect(() => {
     async function loadData() {
       const { data: { user } } = await supabase.auth.getUser();
