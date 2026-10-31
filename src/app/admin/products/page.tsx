@@ -85,6 +85,7 @@ export default function ProductsPage() {
     setProductType("ready_stock");
     setStock("0");
     setImageUrl("");
+    setImageFile(null);
     setEditingId(null);
     setError("");
   }
