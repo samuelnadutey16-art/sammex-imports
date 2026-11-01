@@ -4,8 +4,18 @@ const products = [
  {name:"Smart TV",type:"Ready stock",price:"From GH₵ —",desc:"Add your current stock and selling price."},
  {name:"Kitchen appliance",type:"Pre-order",price:"From GH₵ —",desc:"Source from China through the next buying batch."},
  {name:"Home furniture",type:"Pre-order",price:"From $ —",desc:"Request a sourcing quote for your preferred model."}
-];
-export default async function Home() {
+];export default async function Home() {
+  const { data: products = [], error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("is_active", true)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Products loading error:", error.message);
+  }
+
+  return <main>
   const { data: products = [], error } = await supabase
     .from("products")
     .select("*")
