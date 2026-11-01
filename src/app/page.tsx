@@ -1,10 +1,22 @@
+import { supabase } from "./lib/supabase";
 const categories = ["Electronics & Gadgets","Phones & Accessories","Home & Kitchen","Furniture","Fashion & Accessories","Motorcycles & Parts"];
 const products = [
  {name:"Smart TV",type:"Ready stock",price:"From GH₵ —",desc:"Add your current stock and selling price."},
  {name:"Kitchen appliance",type:"Pre-order",price:"From GH₵ —",desc:"Source from China through the next buying batch."},
  {name:"Home furniture",type:"Pre-order",price:"From $ —",desc:"Request a sourcing quote for your preferred model."}
 ];
-export default function Home(){return <main>
+export default async function Home() {
+  const { data: products = [], error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("is_active", true)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Products loading error:", error.message);
+  }
+
+  return <main>
  <div className="top">CHINA 🇨🇳 TO GHANA 🇬🇭 <span>WhatsApp: +233 54 312 8235</span></div>
  <header><a className="logo" href="/">SAMMEX <b>IMPORTS</b></a><nav><a href="#shop">Shop</a><a href="#services">Import services</a><a href="#how">How it works</a><a href="#contact">Contact</a></nav><a className="navcta" href="https://wa.me/233543128235">Chat with us</a></header>
  <section className="hero"><div><p className="eyebrow">YOUR CHINA–GHANA SOURCING PARTNER</p><h1>Shop globally.<br/><em>Import confidently.</em></h1><p className="lead">Discover ready-stock products in Ghana or pre-order products sourced directly from China. Sammex Imports connects customers, retailers and importers to the products they need.</p><div className="actions"><a className="goldbtn" href="#shop">Explore products</a><a className="outlinebtn" href="#services">Import for business</a></div><small>Pre-order • Ready stock • Sourcing support</small></div><div className="hero-art"><div className="orb">S<br/><small>SI</small></div><div className="art-label">SAMMEX IMPORTS <span>CHINA → GHANA</span></div></div></section>
